@@ -8,7 +8,7 @@ type Setting struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
-func (s Setting) GetSettingInfoByType(t int) (settings []Setting) {
+func GetSettingInfoByType(t int) (settings []Setting) {
 	Map := make(map[string]interface{})
 	Map["type"] = t
 	Map["status"] = 1

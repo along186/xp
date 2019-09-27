@@ -7,10 +7,8 @@ import(
 	"xp/app/Model"
 )
 
-type SettingBill struct {}
-
-func (s SettingBill) CheckSystemAvailable() bool {
-	data := Model.Setting{}.GetSettingInfoByType(1)
+func CheckSystemAvailable() bool {
+	data := Model.GetSettingInfoByType(1)
 	for _, s := range data {
 		// 检查系统是否开放
 		if s.Key == "is_open" && s.Value != "1" {

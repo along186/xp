@@ -11,7 +11,7 @@ import (
 
 func Index(c *gin.Context)  {
 
-	s := Bill.SettingBill{}.CheckSystemAvailable()
+	s := Bill.CheckSystemAvailable()
 	if s != true {
 		c.JSON(http.StatusOK, gin.H{
 			"code" : 1000,
