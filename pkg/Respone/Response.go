@@ -10,7 +10,7 @@ type Response struct {
 	context *gin.Context
 }
 
-func Context(c *gin.Context) *Response {
+func SetContext(c *gin.Context) *Response {
 	return &Response{
 		context: c,
 	}
@@ -22,6 +22,7 @@ func (r *Response) Success(data interface{}) {
 		"msg" : Constant.GetMsg(Constant.SUCCESS),
 		"data" : data,
 	})
+	return
 }
 
 func (r *Response) Error(msg string) {
@@ -30,6 +31,7 @@ func (r *Response) Error(msg string) {
 		"msg" : msg,
 		"data" : "",
 	})
+	return
 }
 
 func (r *Response) Notice(msg string) {
@@ -38,4 +40,5 @@ func (r *Response) Notice(msg string) {
 		"msg" : msg,
 		"data" : "",
 	})
+	return
 }

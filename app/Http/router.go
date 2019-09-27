@@ -9,6 +9,8 @@ import (
 
 	"xp/app/Http/Controller/V1/User"
 
+	"xp/app/Http/Middleware"
+
 )
 
 func InitRouter(e *gin.Engine)  {
@@ -24,6 +26,7 @@ func InitRouter(e *gin.Engine)  {
 
 	//
 	apiv1 := e.Group("/v1/order")
+	apiv1.Use(Middleware.CheckAuthorize())
 	{
 		// 选餐列表
 		apiv1.GET("/list", Order.List)

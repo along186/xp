@@ -10,12 +10,11 @@ import (
 )
 
 func Index(c *gin.Context)  {
-
 	s := Bill.CheckSystemAvailable()
 
 	if s != true {
-		Respone.Context(c).Notice(Constant.GetMsg(Constant.SYSTEM_UNAVAILABLE))
+		Respone.SetContext(c).Notice(Constant.GetMsg(Constant.SystemUnavailable))
 	} else {
-		Respone.Context(c).Success("")
+		Respone.SetContext(c).Success("")
 	}
 }
