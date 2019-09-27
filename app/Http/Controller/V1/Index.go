@@ -2,6 +2,7 @@ package V1
 
 import (
 	"net/http"
+	"xp/app/Constant"
 
 	"github.com/gin-gonic/gin"
 
@@ -12,10 +13,11 @@ import (
 func Index(c *gin.Context)  {
 
 	s := Bill.CheckSystemAvailable()
+
 	if s != true {
 		c.JSON(http.StatusOK, gin.H{
-			"code" : 1000,
-			"msg" : "系统不可用",
+			"code" : Constant.TOAST,
+			"msg" : Constant.GetMsg(Constant.SYSTEM_UNAVAILABLE),
 			"data" : make(map[string]string),
 		})
 	} else {
