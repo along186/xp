@@ -1,13 +1,12 @@
 package V1
 
 import (
-	"net/http"
 	"xp/app/Constant"
+	"xp/pkg/Respone"
 
 	"github.com/gin-gonic/gin"
 
 	"xp/app/Bill"
-
 )
 
 func Index(c *gin.Context)  {
@@ -15,16 +14,8 @@ func Index(c *gin.Context)  {
 	s := Bill.CheckSystemAvailable()
 
 	if s != true {
-		c.JSON(http.StatusOK, gin.H{
-			"code" : Constant.TOAST,
-			"msg" : Constant.GetMsg(Constant.SYSTEM_UNAVAILABLE),
-			"data" : make(map[string]string),
-		})
+		Respone.Context(c).Notice(Constant.GetMsg(Constant.SYSTEM_UNAVAILABLE))
 	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"code" : 200,
-			"msg" : "success",
-			"data" : make(map[string]string),
-		})
+		Respone.Context(c).Success("")
 	}
 }
