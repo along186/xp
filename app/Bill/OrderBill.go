@@ -1,6 +1,12 @@
 package Bill
 
-func ChecTodaykHasOrdered(uid int) bool {
+import "xp/app/Model"
 
-	return true
+func CheckTodaykHasOrdered(uid int) bool {
+	orderList := Model.GetTodayOrderListByUid(uid)
+	if len(orderList) > 0 {
+		return true
+	}
+
+	return false
 }
