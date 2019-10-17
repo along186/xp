@@ -7,11 +7,10 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-
+	"syscall"
 	"xp/pkg/Setting"
 
 	"xp/bootstrap"
-
 )
 
 func main()  {
@@ -26,23 +25,27 @@ func main()  {
 		MaxHeaderBytes: 1 << 20,
 	}
 
+	processed := make(chan struct{})
 	go func() {
-		if err := s.ListenAndServe(); err != nil {
-			log.Printf("Listen: %s\n", err)
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+		<-c
+
+		ctx, cancel := context.WithTimeout(context.Background(), Setting.ReadTimeout)
+		defer cancel()
+		if err := s.Shutdown(ctx); nil != err {
+			log.Fatalf("server shutdown failed, err: %v\n", err)
 		}
+		log.Println("server gracefully shutdown")
+		close(processed)
 	}()
 
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-	<- quit
-
-	log.Println("Shutdown Server ...")
-
-	ctx, cancel := context.WithTimeout(context.Background(), Setting.ReadTimeout)
-	defer cancel()
-	if err := s.Shutdown(ctx); err != nil {
-		log.Fatal("Server Shutdown:", err)
+	// serve
+	err := s.ListenAndServe()
+	if http.ErrServerClosed != err {
+		log.Fatalf("server not gracefully shutdown, err :%v\n", err)
 	}
 
-	log.Println("Server exiting")
+	// waiting for goroutine above processed
+	<-processed
 }
