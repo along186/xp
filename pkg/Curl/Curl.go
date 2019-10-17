@@ -22,6 +22,8 @@ func Get(getUrl string, getData map[string]string) (resp string, err error)  {
 	fmt.Println(urlPath)
 	response,_ := http.Get(urlPath)
 
+	defer response.Body.Close()
+
 	body, _ := ioutil.ReadAll(response.Body)
 
 	return string(body),nil
@@ -49,6 +51,9 @@ func Post(postUrl string, postData map[string]string, headers map[string]string)
 	}
 
 	response, _ := client.Do(request)
+
+	defer response.Body.Close()
+	
 	body, _ := ioutil.ReadAll(response.Body)
 
 	return string(body),nil
