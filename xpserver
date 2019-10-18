@@ -1,6 +1,7 @@
 #!/bin/bash
 XPSEVICE_PATH=$GOPATH"/src/xp"
 XPSEVICE_BIN=$XPSEVICE_PATH"/xp"
+XPSEVICE_LOG="/var/log/xp.access.log"
 start() {
     pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
     if [ $pid -gt 0 ]
@@ -8,7 +9,7 @@ start() {
        echo "$0 is Already started"
        exit 1
     else
-       cd $XPSEVICE_PATH && $XPSEVICE_BIN >> access.log &
+       cd $XPSEVICE_PATH && $XPSEVICE_BIN >> $XPSEVICE_LOG &
        start
     fi
 }
