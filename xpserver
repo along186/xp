@@ -1,4 +1,5 @@
 #!/bin/bash
+. /etc/init.d/functions
 XPSEVICE_PATH=$GOPATH"/src/xp"
 XPSEVICE_BIN=$XPSEVICE_PATH"/xp"
 XPSEVICE_LOG="/var/log/xp.access.log"
@@ -6,19 +7,21 @@ start() {
     pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
     if [ $pid -gt 0 ]
     then
-       echo "$0 is Already started"
+       action "$0 is Already started"
        exit 1
     else
        cd $XPSEVICE_PATH && $XPSEVICE_BIN >> $XPSEVICE_LOG &
+       action "$0 start successful"
     fi
 }
 stop() {
     pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
     if [ $pid -le 0 ]
     then
-        echo "$0 Not started"
+        action "$0 Not started"
     else
         `ps aux | grep -v grep | grep "$XPSEVICE_BIN" | awk '{print $2}' | xargs kill`
+        action "$0 shutdown successful"
     fi
 }
 
