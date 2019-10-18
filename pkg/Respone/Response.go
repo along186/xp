@@ -42,3 +42,8 @@ func (r *Response) Notice(msg string) {
 	})
 	return
 }
+
+func (r *Response) Header(url string)  {
+	r.context.Redirect(301, url)
+	return
+}
