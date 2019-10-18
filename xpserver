@@ -20,7 +20,8 @@ stop() {
     then
         action "$0 Not started" /bin/false
     else
-        `ps aux | grep -v grep | grep "$XPSEVICE_BIN" | awk '{print $2}' | xargs kill`
+        kill `ps aux | grep -v grep | grep "$XPSEVICE_BIN" | awk '{print $2}'`
+        sleep 1
         action "$0 shutdown successful" /bin/true
     fi
 }
