@@ -10,7 +10,6 @@ start() {
        exit 1
     else
        cd $XPSEVICE_PATH && $XPSEVICE_BIN >> $XPSEVICE_LOG &
-       start
     fi
 }
 stop() {
