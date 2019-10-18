@@ -1,0 +1,40 @@
+#!/bin/bash
+XPSEVICE_PATH=$GOPATH"/src/xp"
+XPSEVICE_BIN=$XPSEVICE_PATH"/xp"
+start() {
+    pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
+    if [ $pid -gt 0 ]
+    then
+       echo "$0 is Already started"
+       exit 1
+    else
+       cd $XPSEVICE_PATH && $XPSEVICE_BIN >> access.log &
+       start
+    fi
+}
+stop() {
+    pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
+    if [ $pid -le 0 ]
+    then
+        echo "$0 Not started"
+    else
+        `ps aux | grep -v grep | grep $XPSEVICE_BIN | awk '{print $2}' | xargs kill`
+    fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop      
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo $"Usage:$0 {start|stop|restart}"
+        exit 1
+esac
+exit 0
