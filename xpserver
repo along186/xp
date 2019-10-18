@@ -19,7 +19,7 @@ stop() {
     then
         echo "$0 Not started"
     else
-        `ps aux | grep -v grep | grep $XPSEVICE_BIN | awk '{print $2}' | xargs kill`
+        `ps aux | grep -v grep | grep "$XPSEVICE_BIN" | awk '{print $2}' | xargs kill`
     fi
 }
 
