@@ -20,8 +20,12 @@ func Index(c *gin.Context) {
 
 func Info(c *gin.Context) {
 	if id, err := strconv.ParseInt(c.Param("id"), 10, 64); err == nil {
-		data := Bill.GetProduct(id)
-		Respone.SetContext(c).Success(data)
+		data, err := Bill.GetProduct(id)
+		if err != nil {
+			Respone.SetContext(c).Error(err.Error())
+		} else {
+			Respone.SetContext(c).Success(data)
+		}
 	} else {
 		Respone.SetContext(c).Error(err.Error())
 	}
@@ -45,9 +49,19 @@ func Create(c *gin.Context) {
 		Description:   product.Description,
 		Image:         product.Image,
 		PackageStatus: product.PackageStatus,
+		Status:        Model.ProductStatusNormal,
 		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Now(),
 	}
 	data := Bill.SaveProduct(p)
 	Respone.SetContext(c).Success(data)
+}
+
+func Delete(c *gin.Context) {
+	if id, err := strconv.ParseInt(c.Param("id"), 10, 64); err == nil {
+		data := Bill.DeleteProduct(id)
+		Respone.SetContext(c).Success(data)
+	} else {
+		Respone.SetContext(c).Error(err.Error())
+	}
 }

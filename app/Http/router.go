@@ -58,6 +58,8 @@ func InitRouter(e *gin.Engine) {
 		product.GET("/:id", Product.Info)
 
 		product.POST("", Product.Create)
+
+		product.DELETE("/:id", Product.Delete)
 	}
 
 	common := e.Group("/common")
