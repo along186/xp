@@ -10,3 +10,10 @@ func CheckTodaykHasOrdered(uid int) bool {
 
 	return false
 }
+
+func SaveOrder(order Model.Order) Model.Order {
+
+
+
+	return Model.SaveOrder(order)
+}
