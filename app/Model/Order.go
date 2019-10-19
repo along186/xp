@@ -1,6 +1,8 @@
 package Model
 
-import "time"
+import (
+	"time"
+)
 
 type Order struct {
 	Id        int       `json:"order_id"`
@@ -27,9 +29,26 @@ func GetTodayOrderListByUid(uid int) (orders []Order) {
 	return
 }
 
-
+func CountTodayOrderByUid(uid int) int64 {
+	var rows int64
+	db.Model(Order{}).
+		Where("created_at > ?", time.Now().Format("2006-01-02 00:00:00")).
+		Where("uid = ?", uid).
+		Count(&rows)
+	return rows
+}
 
 func SaveOrder(order Order) Order {
 	db.Model(Product{}).Create(&order)
 	return order
+}
+
+func DeleteTodayOrder(uid int) bool {
+	order := Order{}
+	db.Model(Order{}).Unscoped().
+		Where("created_at > ?", time.Now().Format("2006-01-02 00:00:00")).
+		Where("created_at < ?", time.Now().AddDate(0, 0, 1).Format("2006-01-02 00:00:00")).
+		Where("uid = ?", uid).
+		Delete(&order)
+	return true
 }

@@ -2,13 +2,15 @@ package Order
 
 import (
 	"fmt"
-	"github.com/Unknwon/com"
-	"github.com/gin-gonic/gin"
 	"math/rand"
 	"time"
+
 	"xp/app/Bill"
 	"xp/app/Model"
 	"xp/pkg/Respone"
+
+	"github.com/Unknwon/com"
+	"github.com/gin-gonic/gin"
 	//"xp/pkg/Session"
 )
 
@@ -46,11 +48,17 @@ func Add(c *gin.Context) {
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
-	data := Bill.SaveOrder(p)
-	Respone.SetContext(c).Success(data)
-
+	data, err := Bill.SaveOrder(p)
+	if err != nil {
+		Respone.SetContext(c).Error(err.Error())
+	} else {
+		Respone.SetContext(c).Success(data)
+	}
 }
 
 func Delete(c *gin.Context) {
-
+	userId := 1001
+	data := make(map[string]interface{})
+	data["delete_success"] = Bill.DeleteOrderByUid(userId)
+	Respone.SetContext(c).Success(data)
 }

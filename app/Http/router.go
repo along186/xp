@@ -47,8 +47,8 @@ func InitRouter(e *gin.Engine) {
 		// 选餐详情
 		apiv1.GET("/detail/:name", Order.Detail)
 
-		// 选餐详情
-		apiv1.POST("/detail", Order.Delete)
+		// 取消点餐
+		apiv1.POST("/delete", Order.Delete)
 
 	}
 
