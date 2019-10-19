@@ -1,9 +1,8 @@
 package Model
 
 import (
+	"errors"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 type Product struct {
