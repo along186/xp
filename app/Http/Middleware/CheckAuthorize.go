@@ -16,7 +16,14 @@ func CheckAuthorize() gin.HandlerFunc {
 			msgCode = Constant.IllegalRequest
 		}
 
-		Session.GetInstance().GetUserInfo(c)
+		uid := Session.GetInstance().GetUserUid(c)
+
+		if uid == "" {
+			Respone.SetContext(c).Error(Constant.GetMsg(Constant.ILLEGALLOGIN))
+			c.Abort()
+			return
+		}
+
 		if msgCode != 0 {
 			Respone.SetContext(c).Error(Constant.GetMsg(msgCode))
 			c.Abort()
