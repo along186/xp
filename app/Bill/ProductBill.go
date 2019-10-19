@@ -6,7 +6,7 @@ import (
 
 func GetProductList(page int64, limit int64) map[string]interface{} {
 	data := make(map[string]interface{})
-	data["total"] = Model.CountProducts() / limit
+	data["total"] = Model.CountProducts()/limit + 1
 	data["page"] = page
 	data["limit"] = limit
 	data["products"] = Model.GetProducts(page, limit)
