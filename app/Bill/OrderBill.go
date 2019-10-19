@@ -2,6 +2,7 @@ package Bill
 
 import (
 	"errors"
+	"time"
 
 	"xp/app/Model"
 )
@@ -25,4 +26,17 @@ func SaveOrder(order Model.Order) (Model.Order, error) {
 
 func DeleteOrderByUid(uid int) bool {
 	return Model.DeleteTodayOrder(uid)
+}
+
+func GetTodayEveryBodyOrder(date time.Time) []Model.Order {
+	return Model.GetEveryTodayOrder(date)
+}
+
+func GetReportCount(date time.Time) map[string]interface{} {
+	userCount, signCount, count := Model.ReportCount(date)
+	data := make(map[string]interface{})
+	data["user_count"] = userCount
+	data["sign_count"] = signCount
+	data["count"] = count
+	return data
 }

@@ -73,4 +73,12 @@ func InitRouter(e *gin.Engine) {
 
 	e.StaticFS("uploads", http.Dir("uploads"))
 
+	report := e.Group("/v1/reports")
+	report.Use(Middleware.CheckAuthorize())
+	{
+		report.GET("/everybody", Order.GetEveryBodyOrder)
+
+		report.GET("/count",Order.ReportCount)
+	}
+
 }

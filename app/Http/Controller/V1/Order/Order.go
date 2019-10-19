@@ -8,6 +8,7 @@ import (
 	"xp/app/Bill"
 	"xp/app/Model"
 	"xp/pkg/Respone"
+	"xp/pkg/Session"
 
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,7 @@ func Detail(c *gin.Context) {
 }
 
 type Form struct {
-	ProductId string `form:"product_id" json:"product_id" binding:"required"`
+	ProductId int64 `form:"product_id" json:"product_id" binding:"required"`
 }
 
 func Add(c *gin.Context) {
@@ -34,7 +35,9 @@ func Add(c *gin.Context) {
 	}
 
 	//userId := Session.GetInstance().GetUserId(c)
-	userId := 1001
+	userInfo := Session.GetInstance().GetUserInfo(c)
+	userId := com.StrTo(userInfo["uid"]).MustInt()
+	UserName := userInfo["name"]
 
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 	vcode := fmt.Sprintf("%06v", rnd.Int31n(1000000))
@@ -44,6 +47,7 @@ func Add(c *gin.Context) {
 		OrderNo:   orderNo,
 		ProductId: product.ProductId,
 		Uid:       userId,
+		UserName:  UserName,
 		Status:    Model.ORDER,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
@@ -57,7 +61,8 @@ func Add(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	userId := 1001
+	userInfo := Session.GetInstance().GetUserInfo(c)
+	userId := com.StrTo(userInfo["uid"]).MustInt()
 	data := make(map[string]interface{})
 	data["delete_success"] = Bill.DeleteOrderByUid(userId)
 	Respone.SetContext(c).Success(data)
