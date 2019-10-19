@@ -31,6 +31,12 @@ type resData struct {
 		Phone string `json:"phone"`
 	} `json:"data"`
 }
+
+func (m *Session) GetUserUid(c *gin.Context) string{
+	userInfo := m.GetUserInfo(c)
+	return userInfo["uid"]
+}
+
 func (m *Session) GetUserInfo(c *gin.Context) map[string]string{
 	token := c.GetHeader("TOKEN")
 	url := "http://test5.auth.t.xianghuanji.com/user/getInfo"
