@@ -18,7 +18,6 @@ import (
 
 func Index(c *gin.Context) {
 
-
 	page, _ := strconv.ParseInt(c.DefaultQuery("page", "1"), 10, 64)
 	limit, _ := strconv.ParseInt(c.DefaultQuery("limit", "10"), 10, 64)
 	data := Bill.GetProductList(page, limit)

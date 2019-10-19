@@ -15,6 +15,7 @@ func CheckAuthorize() gin.HandlerFunc {
 		if token == "" {
 			msgCode = Constant.IllegalRequest
 		}
+
 		Session.GetInstance().GetUserInfo(c)
 		if msgCode != 0 {
 			Respone.SetContext(c).Error(Constant.GetMsg(msgCode))

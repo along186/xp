@@ -28,7 +28,7 @@ func (m *Session) GetUserId(c *gin.Context) int {
 	return userv2
 }
 
-func (m *Session) GetUserInfo(c *gin.Context) (map[string]interface{}, error) {
+func (m *Session) GetUserInfo(c *gin.Context) map[string]string {
 	token := c.GetHeader("TOKEN")
 	url := "http://test5.auth.t.xianghuanji.com/user/getInfo"
 	dataUser := make(map[string]string)
@@ -37,25 +37,17 @@ func (m *Session) GetUserInfo(c *gin.Context) (map[string]interface{}, error) {
 	user, _ := Curl.Get(url, dataUser)
 
 	//json str 转map
-	var dat map[string]interface{}
+	var dat map[string]string
 	if err := json.Unmarshal([]byte(user), &dat); err != nil {
-		return dat, err
+		return dat
 	}
+	fmt.Println("============")
 
 	userInfo := make(map[string]string)
 
-	userInfo = dat["data"]
+	userInfo["data"] = dat["data"]
 
 	fmt.Println(userInfo["data"])
 
-
-	//for _, value := range dat {
-		//fmt.Println(value)
-		//if key == "data" {
-		//	userInfo["userid"] = value["id"]
-		//}
-		//fmt.Printf("%s->%-10s", key, value)
-	//}
-
-	return dat, nil
+	return userInfo
 }
