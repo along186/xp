@@ -9,6 +9,7 @@ start() {
         sleep 1
     else
         action "$XPSEVICE_BIN is not exist" /bin/false
+        exit 1
     fi
 
     pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
