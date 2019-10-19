@@ -31,3 +31,12 @@ func DeleteOrderByUid(uid int) bool {
 func GetTodayEveryBodyOrder(date time.Time) []Model.Order {
 	return Model.GetEveryTodayOrder(date)
 }
+
+func GetReportCount(date time.Time) map[string]interface{} {
+	userCount, signCount, count := Model.ReportCount(date)
+	data := make(map[string]interface{})
+	data["user_count"] = userCount
+	data["sign_count"] = signCount
+	data["count"] = count
+	return data
+}

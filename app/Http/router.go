@@ -77,6 +77,8 @@ func InitRouter(e *gin.Engine) {
 	report.Use(Middleware.CheckAuthorize())
 	{
 		report.GET("/everybody", Order.GetEveryBodyOrder)
+
+		report.GET("/count",Order.ReportCount)
 	}
 
 }

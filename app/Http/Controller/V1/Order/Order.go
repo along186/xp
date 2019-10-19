@@ -23,7 +23,7 @@ func Detail(c *gin.Context) {
 }
 
 type Form struct {
-	ProductId string `form:"product_id" json:"product_id" binding:"required"`
+	ProductId int64 `form:"product_id" json:"product_id" binding:"required"`
 }
 
 func Add(c *gin.Context) {

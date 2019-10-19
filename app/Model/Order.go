@@ -8,7 +8,7 @@ import (
 type Order struct {
 	Id        int       `json:"order_id"`
 	OrderNo   string    `json:"order_no"`
-	ProductId string    `json:"product_id"`
+	ProductId int64     `json:"product_id"`
 	Uid       int       `json:"uid"`
 	UserName  string    `json:"user_name"`
 	Status    int       `json:"status"`
@@ -58,11 +58,59 @@ func DeleteTodayOrder(uid int) bool {
 func GetEveryTodayOrder(date time.Time) []Order {
 	orders := []Order{}
 	end := date.AddDate(0, 0, 1).Format("2006-01-02 00:00:00")
-	fmt.Println(date)
-	fmt.Println(end)
 	db.Model(Order{}).
 		Where("created_at > ?", date).
 		Where("created_at < ?", end).
 		Find(&orders)
 	return orders
+}
+
+type p struct {
+	ProductId int64
+	Title     string
+	Count     int64
+}
+
+func ReportCount(date time.Time) (int, int, []p) {
+	// 今日点餐人数
+	userCount := 0
+	start := date
+	end := date.AddDate(0, 0, 1).Format("2006-01-02 00:00:00")
+	db.Model(Order{}).
+		Where("created_at > ?", start).
+		Where("created_at < ?", end).
+		Count(&userCount)
+	// 今日签到人数
+	signCount := 0
+	db.Model(Order{}).
+		Where("created_at > ?", start).
+		Where("created_at < ?", end).
+		Where("status = ?", FINISHED).
+		Count(&signCount)
+	// 获取点餐product_id
+	orders := GetEveryTodayOrder(date)
+	var productIds []int64
+	for _, order := range orders {
+		productIds = append(productIds, order.ProductId)
+	}
+	fmt.Println(productIds)
+	// 获取商品
+	products := []Product{}
+	db.Model(Product{}).Where("id in (?)", productIds).Find(&products)
+	count := []p{}
+	for _, product := range products {
+		var temp int64 = 0
+		for _, order := range orders {
+			if order.ProductId == product.Id {
+				temp = temp + 1
+			}
+		}
+		count = append(count, p{
+			ProductId: product.Id,
+			Title:     product.Title,
+			Count:     temp,
+		})
+	}
+
+	return userCount, signCount, count
 }
