@@ -2,6 +2,7 @@ package Bill
 
 import (
 	"errors"
+	"time"
 
 	"xp/app/Model"
 )
@@ -25,4 +26,8 @@ func SaveOrder(order Model.Order) (Model.Order, error) {
 
 func DeleteOrderByUid(uid int) bool {
 	return Model.DeleteTodayOrder(uid)
+}
+
+func GetTodayEveryBodyOrder(date time.Time) []Model.Order {
+	return Model.GetEveryTodayOrder(date)
 }

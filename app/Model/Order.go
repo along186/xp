@@ -1,6 +1,7 @@
 package Model
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -52,4 +53,16 @@ func DeleteTodayOrder(uid int) bool {
 		Where("uid = ?", uid).
 		Delete(&order)
 	return true
+}
+
+func GetEveryTodayOrder(date time.Time) []Order {
+	orders := []Order{}
+	end := date.AddDate(0, 0, 1).Format("2006-01-02 00:00:00")
+	fmt.Println(date)
+	fmt.Println(end)
+	db.Model(Order{}).
+		Where("created_at > ?", date).
+		Where("created_at < ?", end).
+		Find(&orders)
+	return orders
 }
