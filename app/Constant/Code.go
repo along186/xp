@@ -9,6 +9,7 @@ const (
 	SystemUnavailable = 10000
 	InvalidParams     = 10001
 	IllegalRequest     = 10002
+	ILLEGALLOGIN     = 10003
 )
 
 var MsgFlags = map[int]string {
@@ -18,6 +19,7 @@ var MsgFlags = map[int]string {
 	InvalidParams:     "请求参数错误",
 	SystemUnavailable: "服务不可用",
 	IllegalRequest 	: "非法请求",
+	ILLEGALLOGIN 	: "小主，麻烦登录之后再享受服务哟",
 }
 
 func GetMsg(code int) string {
