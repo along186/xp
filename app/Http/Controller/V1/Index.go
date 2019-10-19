@@ -15,7 +15,6 @@ func Index(c *gin.Context)  {
 	returnData["orderCheck"] = 0
 	returnData["systemCheck"] = 0
 
-
 	// 1.检查用户是否登录
 	userId := Session.GetInstance().GetUserId(c)
 	if userId != 0 { // 已登录
