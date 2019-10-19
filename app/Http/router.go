@@ -1,6 +1,10 @@
 package Http
 
 import (
+	"xp/app/Http/Controller/V1/Common"
+	"xp/app/Http/Controller/V1/Product"
+	"xp/pkg/Respone"
+
 	"github.com/gin-gonic/gin"
 
 	"xp/app/Http/Controller/V1"
@@ -10,10 +14,14 @@ import (
 	"xp/app/Http/Controller/V1/User"
 
 	"xp/app/Http/Middleware"
-
 )
 
-func InitRouter(e *gin.Engine)  {
+func InitRouter(e *gin.Engine) {
+
+	// 404
+	e.NoRoute(func(context *gin.Context) {
+		Respone.SetContext(context).Error("url not found")
+	})
 
 	// 首页
 	e.GET("/v1/index", V1.Index)
@@ -40,6 +48,22 @@ func InitRouter(e *gin.Engine)  {
 		// 选餐详情
 		apiv1.POST("/detail", Order.Delete)
 
+	}
+
+	product := e.Group("/v1/products")
+	product.Use(Middleware.CheckAuthorize())
+	{
+		product.GET("", Product.Index)
+
+		product.GET("/:id", Product.Info)
+
+		product.POST("", Product.Create)
+	}
+
+	common := e.Group("/common")
+	common.Use(Middleware.CheckAuthorize())
+	{
+		common.POST("/upload", Common.Upload)
 	}
 
 }
