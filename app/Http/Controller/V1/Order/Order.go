@@ -35,6 +35,7 @@ func Add(c *gin.Context) {
 
 	//userId := Session.GetInstance().GetUserId(c)
 	userId := 1001
+	UserName := "牛乐园"
 
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 	vcode := fmt.Sprintf("%06v", rnd.Int31n(1000000))
@@ -44,6 +45,7 @@ func Add(c *gin.Context) {
 		OrderNo:   orderNo,
 		ProductId: product.ProductId,
 		Uid:       userId,
+		UserName:  UserName,
 		Status:    Model.ORDER,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),

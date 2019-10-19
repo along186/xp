@@ -8,7 +8,8 @@ type Order struct {
 	Id        int       `json:"order_id"`
 	OrderNo   string    `json:"order_no"`
 	ProductId string    `json:"product_id"`
-	Uid       int       `json:"user_id"`
+	Uid       int       `json:"uid"`
+	UserName  string    `json:"user_name"`
 	Status    int       `json:"status"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
