@@ -1,6 +1,8 @@
 package Http
 
 import (
+	"net/http"
+
 	"xp/app/Http/Controller/V1/Common"
 	"xp/app/Http/Controller/V1/Product"
 	"xp/pkg/Respone"
@@ -67,5 +69,7 @@ func InitRouter(e *gin.Engine) {
 	{
 		common.POST("/upload", Common.Upload)
 	}
+
+	e.StaticFS("uploads", http.Dir("uploads"))
 
 }
