@@ -68,6 +68,7 @@ func InitRouter(e *gin.Engine) {
 	common.Use(Middleware.CheckAuthorize())
 	{
 		common.POST("/upload", Common.Upload)
+		common.POST("/OrderOpen", Common.OrderOpen)
 	}
 
 	e.StaticFS("uploads", http.Dir("uploads"))

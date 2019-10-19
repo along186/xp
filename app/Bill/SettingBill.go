@@ -32,3 +32,7 @@ func CheckSystemAvailable() bool {
 
 	return true
 }
+
+func OrderOpen(open string) bool{
+	return Model.ChangeOrderOpenStatus(com.StrTo(open).MustInt())
+}
