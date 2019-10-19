@@ -4,6 +4,10 @@ XPSEVICE_PATH=$GOPATH"/src/xp"
 XPSEVICE_BIN=$XPSEVICE_PATH"/xp"
 XPSEVICE_LOG="/var/log/xp.access.log"
 start() {
+    if [ !-x $XPSEVICE_BIN ] 
+    then
+        cd $XPSEVICE_PATH && go build || action "XPSEVICE_BIN build failed" /bin/false && exit 1
+    fi
     pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
     if [ $pid -gt 0 ]
     then
