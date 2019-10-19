@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"xp/app/Constant"
 	"xp/pkg/Respone"
+	"xp/pkg/Session"
 )
 
 func CheckAuthorize() gin.HandlerFunc {
@@ -15,6 +16,7 @@ func CheckAuthorize() gin.HandlerFunc {
 			msgCode = Constant.IllegalRequest
 		}
 
+		Session.GetInstance().GetUserInfo(c)
 		if msgCode != 0 {
 			Respone.SetContext(c).Error(Constant.GetMsg(msgCode))
 			c.Abort()
