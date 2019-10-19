@@ -4,10 +4,13 @@ XPSEVICE_PATH=$GOPATH"/src/xp"
 XPSEVICE_BIN=$XPSEVICE_PATH"/xp"
 XPSEVICE_LOG="/var/log/xp.access.log"
 start() {
-    if [ !-x $XPSEVICE_BIN ] 
+    if [ -x $XPSEVICE_BIN ]
     then
-        cd $XPSEVICE_PATH && go build || action "XPSEVICE_BIN build failed" /bin/false && exit 1
+        sleep 1
+    else
+        action "$XPSEVICE_BIN is not exist" /bin/false
     fi
+
     pid=`ps aux | grep -v grep | grep "$XPSEVICE_BIN" | wc -l`
     if [ $pid -gt 0 ]
     then
@@ -30,6 +33,9 @@ stop() {
     fi
 }
 
+rebuild() {
+    cd $XPSEVICE_PATH && /usr/local/go/bin/go build -a && action "$XPSEVICE_BIN build successful" /bin/true
+}
 case "$1" in
     start)
         start
@@ -40,6 +46,9 @@ case "$1" in
     restart)
         stop
         start
+        ;;
+    rebuild)
+        rebuild
         ;;
     *)
         echo $"Usage:$0 {start|stop|restart}"
