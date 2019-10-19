@@ -1,6 +1,7 @@
 package V1
 
 import (
+	"github.com/Unknwon/com"
 	"xp/pkg/Respone"
 	"xp/pkg/Session"
 
@@ -16,7 +17,8 @@ func Index(c *gin.Context)  {
 	returnData["systemCheck"] = 0
 
 	// 1.检查用户是否登录
-	userId := Session.GetInstance().GetUserId(c)
+	userInfo := Session.GetInstance().GetUserInfo(c)
+	userId := com.StrTo(userInfo["uid"]).MustInt()
 	if userId != 0 { // 已登录
 		orderCheck := Bill.CheckTodaykHasOrdered(userId)
 		if orderCheck == true { // 已点餐
